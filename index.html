@@ -215,7 +215,7 @@
       <p class="eyebrow" style="margin:0">Board Inventory · 2026–27 Season</p>
     </div>
     <h1>Dasher Board Map &amp; Sponsorship Inventory</h1>
-    <p class="sub"><b>Mid-South Monarchs</b> · Landers Center, Southaven MS · 2026–27 inaugural season. NHL-regulation sheet, 200&nbsp;ft × 85&nbsp;ft. Every board position numbered, priced, and tracked — sold, in&nbsp;play, and available.</p>
+    <p class="sub"><b>Mid-South Monarchs</b> · Landers Center, Southaven MS · 2026–27 inaugural season. NHL-regulation sheet, 200&nbsp;ft × 85&nbsp;ft. Every board position numbered, priced, and tracked — sold, in&nbsp;play, and available. <b>Updated Aug 26, 2026</b> from the master sponsor sheet.</p>
     <div class="livebar">
       <span class="livedot" id="livedot"></span>
       <span id="livetext">Loading live inventory…</span>
@@ -287,6 +287,7 @@
       <div><b>Pricing.</b> From the 2026–27 rate card: 14&nbsp;ft = $10,000 · 7&nbsp;ft = $6,000 · 4&nbsp;ft = $4,000. <b>Prime</b> = camera-side broadcast wall + attacking-zone corners (highest exposure).</div>
       <div><b>In-ice logos.</b> 10 sellable in-ice positions, each printed as a <b>diagonal pair</b> — the same logo placed kitty-corner across center ice, so a sponsor shows on both ends. Center Ice $20,000 (2) · In-Zone $10,000 (2) · Neutral Zone $8,000 (6) — per pair. The center-ice medallion stays the reserved Monarchs / Landers Center logo (never sold). Track them live from sheet rows named <b>Ice 1…Ice 10</b> (same Status / Sponsor / Logo / Artwork columns as boards). <b>Confirm exact in-ice decal placement on a rink walkthrough before publishing final numbers.</b></div>
       <div><b>Layout basis.</b> Positions derived from the true NHL-regulation 200×85 sheet (28-ft corners, ≈522 ft of dasher). Bench fronts, penalty boxes, and Zamboni gate are separate inventory. <b>Confirm exact panel count on a rink walkthrough before publishing final numbers.</b></div>
+      <div><b>Signed &amp; agreed deals not yet placed on this map</b> (assets TBD — they live in the <a href="https://docs.google.com/spreadsheets/d/10VtVmNHz8GkdIbT8lGmsD3p4pJ5PMqIL58yGsUO1wa4" target="_blank" rel="noopener" style="color:var(--gold)">master sponsor pipeline sheet</a>): Kroger $10,000 · Hertz $4,850 · Jones Law $5,000 · D&amp;D Powersports $5,850 · Mugshots $3,100 · Backbnine $4,500 · Beans and Leaves $2,500 · Kennedy Lawns $2,500 · NWCC Amphitheater $5,000 · Standard Sales $10,000. Map totals cover placed arena assets only — the pipeline sheet is the full money picture ($161,250 agreed · $25,850 collected).</div>
       <div><b>Category exclusivity</b> holds on the prime wall — one partner per category. Prime and corner boards carry a 20–40% exposure premium over back-side inventory.</div>
     </div>
   </footer>
@@ -319,11 +320,36 @@
   // the rate-card list price is used. `incl:true` = asset bundled into another line's package value
   // (counts as $0 here so package totals aren't double-counted).
   var SEED = {
-    // Happy Dad — Mid-South Monarchs: $12,000 draft agreement awaiting MJ/Andreas approval.
-    // Package = Official Hard Seltzer of the Monarchs (flagship) + 7 ft dasherboard +
-    // distribution rights at Landers Center + Happy Dad Game + social. Full $12,000
-    // attributed to this board so the package total isn't double-counted elsewhere.
-    26: {st:'draft', sp:'Happy Dad Hard Seltzer', cash:12000, art:'needed'}  // 7 ft prime, camera side
+    // ---- Updated 2026-08-26 from Charley's master sheet. Board numbers are PROVISIONAL
+    // placements (positions not yet assigned at the arena) — move a deal by editing its number.
+
+    // The Athletic — trade deal: dasher + apparel. Trade valued at 7-ft list until priced.
+    3:  {st:'draft', sp:'Athletic (Apparel)', trade:6000, art:'needed'},          // 7 ft bench side
+
+    // Gold Strike Casino — $12,000 agreed (Ryan Stroemel · meeting 9/6 · $15K proposal out for more).
+    // Package = dasher boards + helmet decal; full $12K attributed here, helmet listed as bundled below.
+    18: {st:'draft', sp:'Gold Strike Casino Resort', cash:12000, art:'needed'},   // 14 ft prime corner
+
+    // Deas Garage Floors — $10,000 SIGNED.
+    20: {st:'sold', sp:'Deas Garage Floors', cash:10000, art:'needed'},           // 14 ft prime, camera side
+
+    // American Services — $9,000 invoiced, $5,000 paid. Package = dashers + PA announcements +
+    // flex book; full $9K attributed here, PA listed as bundled below.
+    21: {st:'sold', sp:'American Services', cash:9000, art:'needed'},             // 14 ft prime, camera side
+
+    // TRAF-MARK — $10,000 agreed, dasher boards. Paper the deal.
+    22: {st:'draft', sp:'TRAF-MARK', cash:10000, art:'needed'},                   // 14 ft prime, camera side
+
+    // Happy Dad — $12,000 draft agreement. Official Hard Seltzer package (dasher + distribution +
+    // Happy Dad Game + social); full $12K attributed to this board.
+    26: {st:'draft', sp:'Happy Dad Hard Seltzer', cash:12000, art:'needed'},      // 7 ft prime, camera side
+
+    // Absolute Kinetics — $5,000 agreed dasher. Paper the deal.
+    27: {st:'draft', sp:'Absolute Kinetics', cash:5000, art:'needed'},            // 7 ft prime, camera side
+
+    // Exhibit A Printing — trade package: game-program printing (14 games) + 12-seat skybox +
+    // dasher. Dasher valued at 7-ft list; print + skybox listed as bundled below. SEND CONTRACT.
+    34: {st:'draft', sp:'Exhibit A Printing', trade:6000, art:'needed'}           // 7 ft west end
   };
 
   // Board geometry (fixed layout), clockwise from bench-side left. All start Available.
@@ -405,7 +431,19 @@
   // ===== IN-GAME FEATURE SPONSORS =====
   // Not tied to a rink location (no chip) — tracked on the Partner Wall only.
   // Official rate card: in-game features (Power Play, Penalty Kill, etc.) = $10,000 each.
-  var FEATURES = [];   // no in-game feature sponsors committed yet
+  var FEATURES = [
+    // ---- Skyboxes (8 at Landers Center · Boxes 3, 5, 6, 7, 8, 10, 11 still open) ----
+    {flabel:'Skybox 2 — Full Season (28 games)', st:'sold', sp:'How To BBQ Right', cash:20000},
+    {flabel:'Skybox — 12 Seats (box TBD)', st:'draft', sp:'Exhibit A Printing', incl:true},
+    // ---- In-game features ----
+    {flabel:'Wing of the Game', st:'sold', sp:'901 Wings', cash:7500},
+    {flabel:'Dirtiest Car of the Game', st:'sold', sp:'Take 5 Oil Change', cash:8050},
+    {flabel:'PA Announcements', st:'sold', sp:'American Services', incl:true},
+    {flabel:'Helmet Decal', st:'draft', sp:'Gold Strike Casino Resort', incl:true},
+    {flabel:'Game-Program Printing (14 games)', st:'draft', sp:'Exhibit A Printing', incl:true},
+    // ---- Broadcast (trade: 60 room nights + $120 team rate — valued at ~$7,200) ----
+    {flabel:'Broadcast Sponsor', st:'draft', sp:'Courtyard Marriott Southaven', trade:7200}
+  ];
   FEATURES.forEach(function(f){ f.id='feature-'+slug(f.flabel); });
 
   /* ---------- CSV PARSE + APPLY ---------- */
