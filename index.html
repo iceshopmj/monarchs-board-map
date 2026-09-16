@@ -215,7 +215,7 @@
       <p class="eyebrow" style="margin:0">Board Inventory · 2026–27 Season</p>
     </div>
     <h1>Dasher Board Map &amp; Sponsorship Inventory</h1>
-    <p class="sub"><b>Mid-South Monarchs</b> · Landers Center, Southaven MS · 2026–27 inaugural season. NHL-regulation sheet, 200&nbsp;ft × 85&nbsp;ft. Every board position numbered, priced, and tracked — sold, in&nbsp;play, and available. <b>Updated Aug 26, 2026</b> from the master sponsor sheet.</p>
+    <p class="sub"><b>Mid-South Monarchs</b> · Landers Center, Southaven MS · 2026–27 inaugural season. NHL-regulation sheet, 200&nbsp;ft × 85&nbsp;ft. Every board position numbered, priced, and tracked — sold, in&nbsp;play, and available. <b>Updated Sep 16, 2026</b> from the master sponsor sheet.</p>
     <div class="livebar">
       <span class="livedot" id="livedot"></span>
       <span id="livetext">Loading live inventory…</span>
@@ -284,9 +284,9 @@
     <div class="footgrid">
       <div><b>Live data.</b> Board status and sponsor names update automatically from the Monarchs inventory sheet — edit the sheet, refresh this page, and the map repaints. Drop a logo image URL in column G (“Logo”) and an artwork status in column H (“Artwork”: Needed / Received / Sent) of a board row. Signed deals are also built into the page directly, so they show even before the sheet is updated — the sheet wins once its row is filled in.</div>
       <div><b>Artwork.</b> Every committed board needs print-ready art before it goes to production. The Artwork tag tracks the handoff: <b>Needed</b> → <b>Received</b> from sponsor → <b>Sent</b> to the board printer.</div>
-      <div><b>Pricing.</b> From the 2026–27 rate card: 14&nbsp;ft = $10,000 · 7&nbsp;ft = $6,000 · 4&nbsp;ft = $4,000. <b>Prime</b> = camera-side broadcast wall + attacking-zone corners (highest exposure).</div>
+      <div><b>Pricing.</b> Per 8-ft panel: Prime $6,000 · Standard $4,000. A 14-ft placement is two adjacent panels: $10,000 prime / $7,000 standard. <b>Prime</b> = camera-side broadcast wall + the two camera-side curved corners. Provisional until a Monarchs rate card is set.</div>
       <div><b>In-ice logos.</b> 10 sellable in-ice positions, each printed as a <b>diagonal pair</b> — the same logo placed kitty-corner across center ice, so a sponsor shows on both ends. Center Ice $20,000 (2) · In-Zone $10,000 (2) · Neutral Zone $8,000 (6) — per pair. The center-ice medallion stays the reserved Monarchs / Landers Center logo (never sold). Track them live from sheet rows named <b>Ice 1…Ice 10</b> (same Status / Sponsor / Logo / Artwork columns as boards). <b>Confirm exact in-ice decal placement on a rink walkthrough before publishing final numbers.</b></div>
-      <div><b>Layout basis.</b> Positions derived from the true NHL-regulation 200×85 sheet (28-ft corners, ≈522 ft of dasher). Bench fronts, penalty boxes, and Zamboni gate are separate inventory. <b>Confirm exact panel count on a rink walkthrough before publishing final numbers.</b></div>
+      <div><b>Layout basis — full perimeter.</b> NHL-regulation 200×85 sheet, 28-ft corners, 522 ft of dasher: 30 straight 8-ft panels (240 ft) + 20 curved corner panels at 8.8 ft (176 ft) = 50 panels, 416 ft. Fixtures drawn in grey: two 24-ft player benches, two 10-ft penalty boxes + 8-ft timekeeper, 12-ft Zamboni gate = 88 ft. Remaining 18 ft is door frames and post gaps. Bench and penalty-box wraps are separate inventory. <b>Confirm Landers Center's actual panel widths and fixture positions on a rink walkthrough before fabricating.</b></div>
       <div><b>Signed &amp; agreed deals not yet placed on this map</b> (assets TBD — they live in the <a href="https://docs.google.com/spreadsheets/d/10VtVmNHz8GkdIbT8lGmsD3p4pJ5PMqIL58yGsUO1wa4" target="_blank" rel="noopener" style="color:var(--gold)">master sponsor pipeline sheet</a>): Kroger $10,000 · Hertz $4,850 · Jones Law $5,000 · D&amp;D Powersports $5,850 · Mugshots $3,100 · Backbnine $4,500 · Beans and Leaves $2,500 · Kennedy Lawns $2,500 · NWCC Amphitheater $5,000 · Standard Sales $10,000. Map totals cover placed arena assets only — the pipeline sheet is the full money picture ($161,250 agreed · $25,850 collected).</div>
       <div><b>Category exclusivity</b> holds on the prime wall — one partner per category. Prime and corner boards carry a 20–40% exposure premium over back-side inventory.</div>
     </div>
@@ -309,7 +309,7 @@
 
   function slug(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 
-  var PRICE = {14:10000, 7:6000, 4:4000};
+  var PRICE = {prime:6000, std:4000};   // per 8-ft panel. Doubles sell at $10,000 prime / $7,000 standard.
   var STLABEL = {sold:'Sold', proposal:'Proposal Out', draft:'Draft — Pending', renewal:'Renewal Target', available:'Available', reserved:'Reserved'};
   var stColor = {sold:'var(--st-sold)', proposal:'var(--st-proposal)', draft:'var(--st-draft)', renewal:'var(--st-renewal)', available:'var(--st-avail)', reserved:'var(--gold)'};
   var ARTLABEL = {needed:'Needed', received:'Received', sent:'Sent'};
@@ -320,60 +320,77 @@
   // the rate-card list price is used. `incl:true` = asset bundled into another line's package value
   // (counts as $0 here so package totals aren't double-counted).
   var SEED = {
-    // ---- Updated 2026-08-26 from Charley's master sheet. Board numbers are PROVISIONAL
-    // placements (positions not yet assigned at the arena) — move a deal by editing its number.
+    // ---- Re-numbered 2026-09-16 for the full-perimeter 50-panel layout (was 40). Placements are
+    // still PROVISIONAL until the arena confirms positions — move a deal by editing its number.
+    // A 14-ft deal = two adjacent 8-ft panels: value on the first, `incl:true` on the second.
 
-    // The Athletic — trade deal: dasher + apparel. Trade valued at 7-ft list until priced.
-    3:  {st:'draft', sp:'Athletic (Apparel)', trade:6000, art:'needed'},          // 7 ft bench side
+    // The Athletic — trade deal: dasher + apparel. One bench-side panel.
+    3:  {st:'draft', sp:'Athletic (Apparel)', trade:6000, art:'needed'},
 
-    // Gold Strike Casino — $12,000 agreed (Ryan Stroemel · meeting 9/6 · $15K proposal out for more).
-    // Package = dasher boards + helmet decal; full $12K attributed here, helmet listed as bundled below.
-    18: {st:'draft', sp:'Gold Strike Casino Resort', cash:12000, art:'needed'},   // 14 ft prime corner
+    // Gold Strike Casino — $12,000 agreed. Two curved panels, camera-side corner. Helmet decal bundled.
+    19: {st:'draft', sp:'Gold Strike Casino Resort', cash:12000, art:'needed'},
+    20: {st:'draft', sp:'Gold Strike Casino Resort', incl:true, art:'needed'},
 
-    // Deas Garage Floors — $10,000 SIGNED.
-    20: {st:'sold', sp:'Deas Garage Floors', cash:10000, art:'needed'},           // 14 ft prime, camera side
+    // Deas Garage Floors — $10,000 SIGNED. Double, camera side.
+    24: {st:'sold', sp:'Deas Garage Floors', cash:10000, art:'needed'},
+    25: {st:'sold', sp:'Deas Garage Floors', incl:true, art:'needed'},
 
-    // American Services — $9,000 invoiced, $5,000 paid. Package = dashers + PA announcements +
-    // flex book; full $9K attributed here, PA listed as bundled below.
-    21: {st:'sold', sp:'American Services', cash:9000, art:'needed'},             // 14 ft prime, camera side
+    // American Services — $9,000 invoiced, $5,000 paid. Double, camera side. PA bundled.
+    26: {st:'sold', sp:'American Services', cash:9000, art:'needed'},
+    27: {st:'sold', sp:'American Services', incl:true, art:'needed'},
 
-    // TRAF-MARK — $10,000 agreed, dasher boards. Paper the deal.
-    22: {st:'draft', sp:'TRAF-MARK', cash:10000, art:'needed'},                   // 14 ft prime, camera side
+    // TRAF-MARK — $10,000 agreed. Double, camera side. Paper the deal.
+    28: {st:'draft', sp:'TRAF-MARK', cash:10000, art:'needed'},
+    29: {st:'draft', sp:'TRAF-MARK', incl:true, art:'needed'},
 
-    // Happy Dad — $12,000 draft agreement. Official Hard Seltzer package (dasher + distribution +
-    // Happy Dad Game + social); full $12K attributed to this board.
-    26: {st:'draft', sp:'Happy Dad Hard Seltzer', cash:12000, art:'needed'},      // 7 ft prime, camera side
+    // Happy Dad — $12,000 draft agreement (Official Hard Seltzer pkg). One camera-side panel.
+    30: {st:'draft', sp:'Happy Dad Hard Seltzer', cash:12000, art:'needed'},
 
-    // Absolute Kinetics — $5,000 agreed dasher. Paper the deal.
-    27: {st:'draft', sp:'Absolute Kinetics', cash:5000, art:'needed'},            // 7 ft prime, camera side
+    // Absolute Kinetics — $5,000 agreed. One camera-side panel. Paper the deal.
+    31: {st:'draft', sp:'Absolute Kinetics', cash:5000, art:'needed'},
 
-    // Exhibit A Printing — trade package: game-program printing (14 games) + 12-seat skybox +
-    // dasher. Dasher valued at 7-ft list; print + skybox listed as bundled below. SEND CONTRACT.
-    34: {st:'draft', sp:'Exhibit A Printing', trade:6000, art:'needed'}           // 7 ft west end
+    // Exhibit A Printing — trade package (print + skybox + dasher). One west-end panel. SEND CONTRACT.
+    43: {st:'draft', sp:'Exhibit A Printing', trade:6000, art:'needed'}
   };
 
-  // Board geometry (fixed layout), clockwise from bench-side left. All start Available.
-  var RAW = [
-    {z:'Bench Side', s:14}, {z:'Bench Side', s:14}, {z:'Bench Side', s:7}, {z:'Bench Side', s:7}, {z:'Bench Side', s:4},
-    {z:'Bench Side', s:4}, {z:'Bench Side', s:7}, {z:'Bench Side', s:7}, {z:'Bench Side', s:14}, {z:'Bench Side', s:14}, {z:'Bench Side', s:7},
-    {z:'Attacking-Zone Corner', s:14, prime:1}, {z:'Attacking-Zone Corner', s:7},
-    {z:'East End', s:7}, {z:'East End', s:4}, {z:'East End', s:4}, {z:'East End', s:4},
-    {z:'Attacking-Zone Corner', s:14, prime:1}, {z:'Attacking-Zone Corner', s:7},
-    {z:'Camera Side', s:14, prime:1}, {z:'Camera Side', s:14, prime:1}, {z:'Camera Side', s:14, prime:1}, {z:'Camera Side', s:14, prime:1},
-    {z:'Camera Side', s:14, prime:1}, {z:'Camera Side', s:14, prime:1}, {z:'Camera Side', s:7, prime:1}, {z:'Camera Side', s:7, prime:1},
-    {z:'Camera Side', s:7, prime:1}, {z:'Camera Side', s:7, prime:1}, {z:'Camera Side', s:4, prime:1}, {z:'Camera Side', s:4, prime:1},
-    {z:'Attacking-Zone Corner', s:14, prime:1}, {z:'Attacking-Zone Corner', s:7},
-    {z:'West End', s:7}, {z:'West End', s:7}, {z:'West End', s:4}, {z:'West End', s:4}, {z:'West End', s:4},
-    {z:'Attacking-Zone Corner', s:14, prime:1}, {z:'Attacking-Zone Corner', s:7}
+  // ===== RINK GEOMETRY — the full 522 ft of dasher, accounted for =====
+  // NHL-regulation 200 x 85 ft, 28-ft corner radius: two 144-ft straights, two 29-ft ends, four 44-ft
+  // corner arcs = 521.9 ft. Sellable panels: standard 8-ft straight panels; corners take 5 curved
+  // (bent) panels per arc at 8.8 ft each. Fixtures that are NOT panels: two 24-ft player benches
+  // (bench side), two 10-ft penalty boxes + 8-ft timekeeper (camera side), 12-ft Zamboni gate (east
+  // end). Small "slack" entries absorb door frames and post gaps. Order: clockwise from bench-side left.
+  var B=['b',8], C=['c',8.8];
+  var SEGS = [
+    {ft:144, px:760,   z:'Bench Side',      items:[['s',4],B,B,B,B,B,['x',24,'Home Bench'],B,['x',24,'Away Bench'],B,B,B,B,B,['s',4]]},
+    {ft:44,  px:188.5, z:'Corner (curved)', items:[C,C,C,C,C]},
+    {ft:29,  px:185,   z:'East End',        items:[['s',0.5],B,['x',12,'Zamboni Gate'],B,['s',0.5]]},
+    {ft:44,  px:188.5, z:'Corner (curved)', prime:1, items:[C,C,C,C,C]},
+    {ft:144, px:760,   z:'Camera Side',     prime:1, items:[['s',2],B,B,B,B,B,B,B,['x',10,'Penalty Box',0],['x',8,'Penalty Boxes + Timekeeper',28],['x',10,'Penalty Box',0],B,B,B,B,B,B,B,['s',2]]},
+    {ft:44,  px:188.5, z:'Corner (curved)', prime:1, items:[C,C,C,C,C]},
+    {ft:29,  px:185,   z:'West End',        items:[['s',2.5],B,B,B,['s',2.5]]},
+    {ft:44,  px:188.5, z:'Corner (curved)', items:[C,C,C,C,C]}
   ];
-
-  var SEG = [
-    [5, 0.030, 0.120], [6, 0.170, 0.270], [2, 0.295, 0.352], [4, 0.362, 0.426],
-    [2, 0.435, 0.495], [12, 0.505, 0.785], [2, 0.810, 0.850], [5, 0.862, 0.925], [2, 0.950, 0.990]
-  ];
-  var fracs = [], idx = 0;
-  SEG.forEach(function(g){ var n=g[0], a=g[1], b=g[2]; for (var i=0;i<n;i++){ fracs[idx++] = a + (b-a)*((i+0.5)/n); } });
-  RAW.forEach(function(b,i){ b.num=i+1; b.id='board-'+(i+1); b.price=PRICE[b.s]; b.frac=fracs[i]; b.st='available'; b.sp=''; b.logo=''; b.art=''; });
+  var PX_TOTAL = SEGS.reduce(function(a,g){return a+g.px;},0);
+  var RAW = [], FIXTURES = [], pxCursor = 0, RINK_FT = 0;
+  SEGS.forEach(function(g){
+    var ftCursor = 0;
+    g.items.forEach(function(it){
+      var kind=it[0], ft=it[1];
+      var f0=(pxCursor + ftCursor/g.ft*g.px)/PX_TOTAL, f1=(pxCursor + (ftCursor+ft)/g.ft*g.px)/PX_TOTAL;
+      if (kind==='b' || kind==='c'){
+        var b={z:g.z, s:ft, curved:kind==='c', prime:g.prime?1:0, frac:(f0+f1)/2, f0:f0, f1:f1};
+        b.num=RAW.length+1; b.id='board-'+b.num; b.price=PRICE[b.prime?'prime':'std'];
+        b.st='available'; b.sp=''; b.logo=''; b.art=''; RAW.push(b);
+      } else if (kind==='x'){ FIXTURES.push({name:it[2], ft:ft, lbl:(it.length>3?it[3]:ft), f0:f0, f1:f1, frac:(f0+f1)/2}); }
+      ftCursor += ft;
+    });
+    RINK_FT += g.ft; pxCursor += g.px;
+  });
+  var N_BOARDS = RAW.length;                                  // 50
+  var N_STRAIGHT = RAW.filter(function(b){return !b.curved;}).length;   // 30
+  var N_CURVED = RAW.filter(function(b){return b.curved;}).length;      // 20
+  var FIXTURE_FT = FIXTURES.reduce(function(a,x){return a+x.ft;},0);    // 88
+  var BOARD_FT = Math.round(RAW.reduce(function(a,b){return a+b.s;},0)); // 416
 
   function applySeed(){
     RAW.forEach(function(b){ b.st='available'; b.sp=''; b.logo=''; b.art=''; b.cash=0; b.trade=0; b.incl=false; });
@@ -384,7 +401,7 @@
   }
   applySeed();
 
-  var zoneList = ['Bench Side','Attacking-Zone Corner','East End','Camera Side','West End'];
+  var zoneList = ['Bench Side','Corner (curved)','East End','Camera Side','West End'];
 
   // ===== IN-ICE LOGOS (diagonal pairs) =====
   // 10 sellable in-ice logo positions. Each one prints as a DIAGONAL PAIR — the same
@@ -555,8 +572,14 @@
     }
     op = el('path',{d:d, fill:'none', stroke:'none'}); svg.appendChild(op);
     L = op.getTotalLength();
-    gapLabel(0.145, 'BENCHES · BOXES');
-    gapLabel(0.305, 'ZAM GATE');
+    FIXTURES.forEach(function(x){
+      var pts=[]; for (var i=0;i<=8;i++){ var q=ptAt(x.f0+(x.f1-x.f0)*i/8); pts.push(q.x+','+q.y); }
+      svg.appendChild(el('polyline',{points:pts.join(' '),fill:'none',stroke:'var(--ink-faint)','stroke-width':12,'stroke-linecap':'butt',opacity:.45}));
+      if (!x.lbl) return;
+      var p=ptAt(x.frac), n=outNormal(x.frac);
+      var t=el('text',{x:p.x+n.nx*40,y:p.y+n.ny*40,'text-anchor':'middle','dominant-baseline':'middle','font-size':10,'font-weight':700,fill:'var(--ink-faint)','letter-spacing':'.04em'});
+      t.textContent=x.name.toUpperCase()+' · '+x.lbl+' FT'; svg.appendChild(t);
+    });
     staticDrawn=true;
   }
   function ptAt(f){ var p=op.getPointAtLength(((f%1)+1)%1*L); return {x:p.x,y:p.y}; }
@@ -626,11 +649,12 @@
       [moneyExact(cashSold),  'Cash Sold', 'good'],
       [moneyExact(tradeSold), 'Trade Sold', 'accent'],
       [moneyExact(propOut),   propCt+' Proposal'+(propCt===1?'':'s')+' Out', 'accent'],
-      ['40', 'Board Positions', ''],
+      [String(N_BOARDS), 'Board Panels ('+N_STRAIGHT+' straight + '+N_CURVED+' curved)', ''],
       [money(total), 'Total Board Inventory', 'accent'],
       [moneyExact(boardSoldVal), soldCt+' Boards Sold', 'good'],
-      [money(avail), (40-inPlayCt)+' Boards Available', ''],
-      [Math.round(inPlayCt/40*100)+'%', 'Committed / In Pipeline', ''],
+      [money(avail), (N_BOARDS-inPlayCt)+' Boards Available', ''],
+      [Math.round(inPlayCt/N_BOARDS*100)+'%', 'Committed / In Pipeline', ''],
+      [BOARD_FT+' ft', 'Panel footage of '+Math.round(RINK_FT)+' ft dasher · '+FIXTURE_FT+' ft benches/boxes/gate', ''],
       [String(iceCount), 'In-Ice Logo Pairs', ''],
       [money(iceTotal), 'In-Ice Inventory', 'accent'],
       [iceInPlay+' / '+iceCount, 'In-Ice Committed', iceInPlay?'good':''],
@@ -699,7 +723,7 @@
           : '<span class="na">—</span>';
         tr.innerHTML =
           '<td class="num"><span class="bnum'+(b.prime?' prime':'')+'">'+b.num+'</span></td>'+
-          '<td>'+b.s+' ft'+(b.prime?' · <span style="color:var(--gold);font-weight:700">Prime</span>':'')+'</td>'+
+          '<td>'+b.s+' ft'+(b.curved?' curved':'')+(b.prime?' · <span style="color:var(--gold);font-weight:700">Prime</span>':'')+'</td>'+
           '<td class="num price">$'+b.price.toLocaleString()+'</td>'+
           '<td><span class="pill '+b.st+'"><span class="d"></span>'+STLABEL[b.st]+'</span></td>'+
           '<td>'+sp+'</td>'+
@@ -798,7 +822,7 @@
   document.addEventListener('click', function(){ hideTip(); });
   function showTip(b){
     tipNum=b.num;
-    var htm='<div class="tn">Board '+b.num+' · '+b.s+' ft'+(b.prime?' · <span style="color:var(--gold)">Prime</span>':'')+'</div>';
+    var htm='<div class="tn">Board '+b.num+' · '+b.s+' ft'+(b.curved?' curved':'')+(b.prime?' · <span style="color:var(--gold)">Prime</span>':'')+'</div>';
     if (b.sp){
       if (b.logo) htm+='<img src="'+esc(b.logo)+'" alt="" onerror="this.remove()">';
       htm+='<div class="tm"><b style="color:var(--ink)">'+esc(b.sp)+'</b></div>';
